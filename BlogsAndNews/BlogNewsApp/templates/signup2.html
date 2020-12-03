@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        var pass;
+		var email1;
+		var name1;
+		function checkPass()
+		{
+		    //Store the password field objects into variables ...
+		    var pass1 = document.getElementById('password1');
+		    var pass2 = document.getElementById('password2');
+		    //Store the Confimation Message Object ...
+		    var message = document.getElementById('confirmMessage');
+		    //Set the colors we will be using ...
+		    var goodColor = "#66cc66";
+		    var badColor = "#ff6666";
+		    //Compare the values in the password field
+		    //and the confirmation field
+		    //if(pass1.value != pass2.value && pass2 != null)
+		    //{
+		    //}
+		    if(pass1.value == pass2.value && pass1.value.length !== 0)
+		    {
+		        //The passwords match.
+		        //Set the color to the good color and inform
+		        //the user that they have entered the correct password
+		        pass2.style.backgroundColor = goodColor;
+		        message.style.color = goodColor;
+		        message.innerHTML = "Passwords Match!"
+		        pass = true;
+		        //if(email1 && name1)
+		        //	document.getElementById("submit").disabled = false;
+		    }
+		    else{
+		        //The passwords do not match.
+		        //Set the color to the bad color and
+		        //notify the user.
+		        pass2.style.backgroundColor = badColor;
+		        message.style.color = badColor;
+		        message.innerHTML = "Passwords Do Not Match!"
+		        pass=false;
+		        //document.getElementById("submit").disabled = true;
+		    }
+		}
+        function checkEmail()
+		{
+			var message1 = document.getElementById('confirmationMessage');
+			var email = document.getElementById('emailid');
+			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			var goodColor = "#66cc66";
+		    var badColor = "#ff6666";
+			if ((!filter.test(email.value)) || email.value.length === 0)
+			{
+				//alert('Enter correct Id')
+				email.style.backgroundColor = badColor;
+				message1.style.color = badColor;
+				message1.innerHTML = "Enter valid email-Id!";
+				email1=false;
+				//document.getElementById("submit").disabled = true;
+			}
+			else
+			{
+				email.style.backgroundColor = goodColor;
+				message1.style.color = goodColor;
+				message1.innerHTML = "Id is valid!";
+				email1 = true;
+				//if(pass && name1)
+			    //    document.getElementById("submit").disabled = false;
+			}
+		}
+    </script>
+</head>
+<body>
+
+<form action="/BlogNewsApp/saveuser" name="formName" method="post">
+
+{% csrf_token %}
+
+							Email:<input type="Text" name="email" class="form-control" id="emailid" onchange="checkEmail()" placeholder="Your Email Address" style="color:black">
+							<span id="confirmationMessage" class="confirmMessage"></span><br>
+							Password:<input type="Password" name="password1" id="password1" onkeyup="checkPass()" class="form-control" style="color:black"><br>
+							Confirm Password:<input type="Password" name="password2" onkeyup="checkPass()" id="password2" onblur="validateField()" class="form-control" style="color:black">
+<br/><br/><button type="submit" id="submit" class="btn btn-default">Signup</button>
+</form>
+</body>
+</html>

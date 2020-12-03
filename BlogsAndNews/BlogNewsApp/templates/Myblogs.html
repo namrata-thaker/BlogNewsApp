@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+</style>
+</head>
+<body>
+<ul>
+  <li><a href="/BlogNewsApp/homepage">Home</a></li>
+  <li><a href="Myblogs"> Myblogs </a></li>
+    <li><a href="CreateBlog"> Create Blog </a></li>
+    <li><a href="../logout/"> Logout </a></li>
+</ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript">
+function myFunction(blogid) {
+  if (confirm("Are you sure you want to delete?")) {
+    console.log("Request received");
+    $.ajaxSetup({async: false});
+    $.ajax({
+            async: "false",
+            url: "/BlogNewsApp/homepage/Myblogs/delete",
+            data : { blogid: blogid},
+            success : function(json) {
+                console.log("requested access complete");
+                return window.location.reload();
+            },
+    });
+  }
+}
+</script>
+
+    {% block content %}
+
+    {% for blog in blog_list %}
+
+
+    <h5>{{ blog.title }}</h5>
+    {{ blog.body }}<br>
+        {{ blog.author }} | {{ blog.posted }}
+
+        <input type="hidden" value={{blog.blogid}} name="blogid">
+        <button onclick="myFunction({{blog.blogid}})">Delete</button>
+    </p>
+
+
+
+
+
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>
