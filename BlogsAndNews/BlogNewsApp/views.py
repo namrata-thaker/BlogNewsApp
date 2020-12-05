@@ -21,7 +21,8 @@ def save_user(request):
         #user = form1.save()
         email = request.POST["email"]
         password = request.POST["password1"]
-        account = Account(email=email,password=password)
+        md5password = hashlib.md5(password.encode()).digest()
+        account = Account(email=email,password=md5password)
         account.save()
         request.session["accountid"] = account.accountid
         request.session["email"]=email
@@ -46,7 +47,8 @@ def login_view(request):
 
 def authenticate(email, password, request):
     try:
-        account = Account.objects.get(email=email, password=password)
+        md5password = hashlib.md5(password.encode()).digest()
+        account = Account.objects.get(email=email, password=md5password)
     except:
         return False
     if account is None:
@@ -69,6 +71,8 @@ def homepage(request):
     #password=request.POST["pass"]
     #account=Account(email=email,password=password)
     #account.save()
+    if "accountid" not in request.session.keys():
+        return redirect("/BlogNewsApp/")
     newsapi = NewsApiClient(api_key='4194374ba17d44c5aa601934cf2f47ed')
     topheadlines = newsapi.get_top_headlines(sources="bbc-news")
     articles = topheadlines['articles']
